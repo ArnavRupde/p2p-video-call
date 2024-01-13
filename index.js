@@ -43,7 +43,14 @@ io.on('connection', socket => {
         // Logic to handle joining an existing room
         const room = rooms[roomId];
 
-        if (room && room.members.length == 1) {
+        if(!rooms[roomId]) {
+            rooms[roomId] = {
+                members: [socket.id],
+            };
+            // socket.join(roomId);
+            socket.emit('room-created', roomId);
+            console.log(`Room created: ${roomId}`);
+        } else if (room && room.members.length == 1) {
             // room.members.push(socket.id);
             // socket.join(roomId);
             console.log("Sending join request to room owner", socket.id);
